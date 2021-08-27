@@ -16,3 +16,4 @@ def torch_squares(k):
     return torch.tensor([i**2 for i in range(1,k+1)])
     pass
 
+
