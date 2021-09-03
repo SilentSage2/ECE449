@@ -31,6 +31,14 @@ def linear_gd(X, Y, lrate=0.01, num_iter=1000):
     
     NOTE: Prepend a column of ones to X. (different from slides!!!)
     '''
+    N = X.shape[0]
+    d = X.shape[1]
+    w = torch.zeros(d+1, 1)
+    X_new = torch.cat((torch.tensor.ones(N, 1), X), 1)
+    for epoc in range(num_iter):
+      grad_of_loss = tensor.matmul(X_new.T, tensor.matmul(X_new, w) - Y)
+      w = w - lrate * grad_of_loss
+    return w
     pass
 
 
@@ -45,6 +53,10 @@ def linear_normal(X, Y):
     
     NOTE: Prepend a column of ones to X. (different from slides!!!)
     '''
+    X_new = torch.cat((torch.tensor.ones(N, 1), X), 1)
+    pseudoinverse = torch.matmul(torch.matmul(X_new, X_new).inverse, X_new.T)
+    w = torch.matmul(pseudoinverse, Y)
+    return w
     pass
 
 
@@ -53,6 +65,13 @@ def plot_linear():
         Returns:
             Figure: the figure plotted with matplotlib
     '''
+    X, Y = load_reg_data()
+    w = linear_normal(X, Y)
+    X_new = torch.cat((torch.tensor.ones(N, 1), X), 1)
+    y_hat = torch.matmul(X_new, w)
+    plt.plot(X, y_hat)
+    plt.scatter(X, Y)
+    plt.show()
     pass
 
 
