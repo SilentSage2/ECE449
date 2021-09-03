@@ -36,7 +36,7 @@ def linear_gd(X, Y, lrate=0.01, num_iter=1000):
     w = torch.zeros(d+1, 1)
     X_new = torch.cat((torch.ones(N, 1), X), 1)
     for epoc in range(num_iter):
-      grad_of_loss =torch.matmul(X_new.T, torch.matmul(X_new, w) - Y)
+      grad_of_loss =torch.matmul(X_new.T, torch.matmul(X_new, w) - Y) / N
       w = w - lrate * grad_of_loss
     return w
     pass
