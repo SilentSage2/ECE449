@@ -36,8 +36,9 @@ def linear_gd(X, Y, lrate=0.01, num_iter=1000):
     w = torch.zeros(d+1, 1)
     X_new = torch.cat((torch.ones(N, 1), X), 1)
     for epoc in range(num_iter):
-      grad_of_loss =torch.matmul(X_new.T, torch.matmul(X_new, w) - Y) / N
-      w = w - lrate * grad_of_loss
+        # gradient of R is: (1/N)*X.T*(Xw-Y)
+        grad_of_loss =torch.matmul(X_new.T, torch.matmul(X_new, w) - Y) / N
+        w = w - lrate * grad_of_loss
     return w
     pass
 
@@ -55,6 +56,7 @@ def linear_normal(X, Y):
     '''
     N = X.shape[0]
     X_new = torch.cat((torch.ones(N, 1), X), 1)
+    # pinverse: (X.T*X)^(-1)*X.T
     pseudoinverse = torch.matmul(torch.inverse(torch.matmul(X_new.T, X_new)), X_new.T)
     w = torch.matmul(pseudoinverse, Y)
     return w
