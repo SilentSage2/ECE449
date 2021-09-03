@@ -55,7 +55,7 @@ def linear_normal(X, Y):
     '''
     N = X.shape[0]
     X_new = torch.cat((torch.ones(N, 1), X), 1)
-    pseudoinverse = torch.matmul(torch.matmul(X_new.T, X_new).inverse, X_new.T)
+    pseudoinverse = torch.matmul(torch.inverse(torch.matmul(X_new.T, X_new)), X_new.T)
     w = torch.matmul(pseudoinverse, Y)
     return w
     pass
