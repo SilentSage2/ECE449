@@ -92,6 +92,16 @@ def logistic(X, Y, lrate=.01, num_iter=1000):
     
     NOTE: Prepend a column of ones to X. (different from slides) 
     '''
+    N = X.shape[0]
+    d = X.shape[1]
+    w = torch.zeros(d+1, 1)
+    X_new = torch.cat((torch.ones(N, 1), X), 1)
+    for epoc in range(num_iter):
+        # gradient of R is: (1/N)*exp(-(Xw).T)*y)/(1+exp(-(Xw).T)*y))*(-X.T*y)
+        exp_part = torch.exp((-1)*torch.matmul(torch.matmul(X_new, w).T), Y)
+        grad_of_loss = (-1) * exp_part / (1 + exp_part) * torch.matmul(X_new.T, Y) / N
+        w = w - lrate * grad_of_loss
+    return w
     pass
 
 
@@ -100,4 +110,15 @@ def logistic_vs_ols():
     Returns:
         Figure: the figure plotted with matplotlib
     '''
+    X, Y = load_reg_data()
+    N = X.shape[0]
+    X_new = torch.cat((torch.ones(N, 1), X), 1)
+    w_linear = linear_normal(X, Y)
+    y_hat_linear = torch.matmul(X_new, w_linear)
+    w_logistic = logistic(X, Y)
+    y_hat_logistic = torch.matmul(X_new, w_logistic)
+    plt.plot(X, y_hat_linear)
+    plt.plot(X, y_hat_logistic)
+    plt.scatter(X, Y)
+    plt.show()
     pass
