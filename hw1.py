@@ -98,7 +98,7 @@ def logistic(X, Y, lrate=.01, num_iter=1000):
     X_new = torch.cat((torch.ones(N, 1), X), 1)
     for epoc in range(num_iter):
         # gradient of R is: (1/N)*exp(-(Xw).T)*y)/(1+exp(-(Xw).T)*y))*(-X.T*y)
-        exp_part = torch.exp((-1)*torch.matmul(torch.matmul(X_new, w).T), Y)
+        exp_part = torch.exp((-1)*torch.matmul(torch.matmul(X_new, w).T, Y))
         grad_of_loss = (-1) * exp_part / (1 + exp_part) * torch.matmul(X_new.T, Y) / N
         w = w - lrate * grad_of_loss
     return w
