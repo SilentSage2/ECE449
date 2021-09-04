@@ -106,7 +106,7 @@ def logistic(X, Y, lrate=.01, num_iter=1000):
 def logsitic_gradient(X, Y, w, N, d):
     grad = torch.zeros(d+1,1)
     for i in range(N):
-        exp_part = torch.exp((-1) * torch.matmul(X[i].reshape(d+1,1), w) * Y[i])
+        exp_part = torch.exp((-1) * torch.matmul(X[i], w) * Y[i])
         grad += exp_part / (1 + exp_part) * (-1) * Y[i] * X[i].reshape(d+1,1)
     return grad / N 
 
