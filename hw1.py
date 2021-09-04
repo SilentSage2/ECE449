@@ -77,6 +77,7 @@ def plot_linear():
     plt.plot(X, y_hat)
     plt.scatter(X, Y)
     plt.show()
+    return plt.gcf()
     pass
 
 
@@ -126,4 +127,5 @@ def logistic_vs_ols():
     plt.plot(X, y_hat_logistic)
     plt.scatter(X, Y)
     plt.show()
+    return plt.gcf()
     pass
