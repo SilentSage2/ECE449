@@ -71,11 +71,18 @@ def plot_linear():
     '''
     X, Y = load_reg_data()
     N = X.shape[0]
+
     w = linear_normal(X, Y)
+
     X_new = torch.cat((torch.ones(N, 1), X), 1)
     y_hat = torch.matmul(X_new, w)
-    plt.plot(X, y_hat)
+
+    plt.plot(X, y_hat,"r-")
     plt.scatter(X, Y)
+    plt.xlabel("input X")
+    plt.ylabel("output Y")
+    plt.grid(linestyle='--')
+    plt.legend(["Regression","Original"])
     plt.show()
     return plt.gcf()
     pass
@@ -116,16 +123,33 @@ def logistic_vs_ols():
     Returns:
         Figure: the figure plotted with matplotlib
     '''
-    X, Y = load_reg_data()
-    N = X.shape[0]
-    X_new = torch.cat((torch.ones(N, 1), X), 1)
-    w_linear = linear_normal(X, Y)
-    y_hat_linear = torch.matmul(X_new, w_linear)
-    w_logistic = logistic(X, Y)
-    y_hat_logistic = torch.matmul(X_new, w_logistic)
-    plt.plot(X, y_hat_linear)
-    plt.plot(X, y_hat_logistic)
-    plt.scatter(X, Y)
+    # X_reg, Y_reg = load_reg_data()
+    # # print(X_reg.shape)
+    # N = X_reg.shape[0]
+    # X_reg_new = torch.cat((torch.ones(N, 1), X_reg), 1)
+    # w_linear = linear_gd(X_reg, Y_reg)
+    # y_hat_linear = torch.matmul(X_reg_new, w_linear)
+
+    X, Y = load_logistic_data()
+
+    x_begin = min(X.T[0])
+    x_end = max(X.T[0])
+    x = torch.linspace(x_begin, x_end, 1000)
+
+    w_reg = linear_gd(X, Y)
+    boundary_reg = -w_reg[1]/w_reg[2]*x-w_reg[0]/w_reg[2]
+
+    w_log = logistic(X, Y)
+    boundary_log = -w_log[1]/w_log[2]*x-w_log[0]/w_log[2]
+
+    plt.plot(x, boundary_reg,"r-")
+    plt.plot(x, boundary_log,"g-")
+    plt.scatter(X.T[0], X.T[1])
+    plt.xlabel("$X_{1}$")
+    plt.ylabel("$X_{2}$")
+    plt.grid(linestyle='--')
+    plt.legend(["Linear","Logistic","Dataset"])
     plt.show()
     return plt.gcf()
     pass
+
