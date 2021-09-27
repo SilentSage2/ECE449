@@ -92,7 +92,7 @@ class DigitsConvNet(nn.Module):
         '''
         # convolutional layer
         N = xb.size()[0]
-        xb = xb.view(-1, N, 8, 8)
+        xb = xb.view(N, 1, 8, 8)
         xb = self.conv1(xb)
         xb = F.relu(xb)
         # maximum pooling layer
