@@ -45,8 +45,6 @@ def svm_solver(x_train, y_train, lr, num_iters,
     alp = torch.zeros(N, requires_grad=True)
 
     for epoc in range(num_iters):
-      # alp = alp - lr*
-      A[i,j]=y_train[i]*y_train[j]*(1+torch.matmul(x[i],x[j].T))**2
       g = torch.matmul(torch.ones(N).T,alp)-0.5*torch.matmul(torch.matmul(alp.T,A),alp)
       g.backward()
       torch.clamp(alp - lr * alp.grad())
