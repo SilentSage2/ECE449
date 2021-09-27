@@ -71,7 +71,7 @@ class DigitsConvNet(nn.Module):
         super(DigitsConvNet, self).__init__()
         torch.manual_seed(0) # Do not modify the random seed for plotting!
         self.conv1 = nn.Conv2d(1, 8, 3)
-        self.pooling = nn.MaxPool2D(2)
+        self.pooling = nn.MaxPool2d(2)
         self.conv2 = nn.Conv2d(8, 4, 3)
         self.fc = nn.Linear(4, 10)
         pass
@@ -90,6 +90,7 @@ class DigitsConvNet(nn.Module):
         Returns:
             An (N, 10) torch tensor
         '''
+        # convolutional layer
         xb = self.conv1(xb)
         xb = F.relu(xb)
         # maximum pooling layer
@@ -97,10 +98,10 @@ class DigitsConvNet(nn.Module):
         xb = F.relu(xb)
         # convolutional layer
         xb = self.conv2(xb)
-        xb = F.reLU(xb)
+        xb = F.relu(xb)
         # fully connected layer
         xb = self.fc(xb)
-        xb = F.reLU(xb)
+        xb = F.relu(xb)
         return xb
         pass
 
