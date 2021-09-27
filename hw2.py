@@ -34,8 +34,8 @@ def svm_solver(x_train, y_train, lr, num_iters,
     You will then need to use alpha.requires_grad_().
     Alternatively, use in-place operations such as clamp_().
     '''
-    N = x_train.shape()[0]
-    d = x_train.shape()[1]
+    N = x_train.shape[0]
+    d = x_train.shape[1]
 
     A = torch.zeros(N,N)
     for i in range(N):
@@ -45,10 +45,16 @@ def svm_solver(x_train, y_train, lr, num_iters,
     alp = torch.zeros(N, requires_grad=True)
 
     for epoc in range(num_iters):
+      
       g = torch.matmul(torch.ones(N).T,alp)-0.5*torch.matmul(torch.matmul(alp.T,A),alp)
+
+      if alp.grad:
+        alp.grad.zero_()
+
       g.backward()
-      alp = (alp - lr * alp.grad).clamp()
-      alp.requires_grad_()
+      with torch.no_grad():
+        alp = torch.clamp_(alp - lr * alp.grad, 0, c)
+        alp.requires_grad_()
       
     return alp
     pass
