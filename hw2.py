@@ -43,18 +43,20 @@ def svm_solver(x_train, y_train, lr, num_iters,
         A[i,j]=y_train[i]*y_train[j]*kernel(x_train[i],x_train[j])
 
     alp = torch.zeros(N, requires_grad=True)
+    # print(torch.matmul(torch.ones(1,N),alp))
 
     for epoc in range(num_iters):
-      
-      g = torch.matmul(torch.ones(N).T,alp)-0.5*torch.matmul(torch.matmul(alp.T,A),alp)
+
+      g = torch.matmul(torch.ones(1,N),alp)-0.5*torch.matmul(torch.matmul(alp.T,A),alp)
 
       if alp.grad:
         alp.grad.zero_()
 
       g.backward()
       with torch.no_grad():
-        alp = torch.clamp_(alp - lr * alp.grad, 0, c)
-        alp.requires_grad_()
+        print(alp.grad)
+        alp = torch.clamp(alp - lr * alp.grad, 0, c)
+      alp.requires_grad_()
       
     return alp
     pass
@@ -77,14 +79,16 @@ def svm_predictor(alpha, x_train, y_train, x_test,
         A 1d tensor with shape (M,), the outputs of SVM on the test set.
     '''
     N = alpha.shape[0]
+    N = alpha.shape[0]
     d = alpha.shape[1]
     M = x_test.shape[0]
 
     w = torch.zeros(d)
+    for j in range(N):
+      w = w + alpha[j]*y_train[j]*x_train[j]
+
     result = torch.zeros(M)
     for i in range(M):
-      for j in range(N):
-        w = w + alpha[j]*y_train[j]*x_train[j]
       if torch.matmul(x_test[i]*w)>=0:
         result[i] = 1
       else:
