@@ -91,6 +91,8 @@ class DigitsConvNet(nn.Module):
             An (N, 10) torch tensor
         '''
         # convolutional layer
+        N = xb.size()[0]
+        xb = xb.view(-1, N, 8, 8)
         xb = self.conv1(xb)
         xb = F.relu(xb)
         # maximum pooling layer
@@ -102,7 +104,7 @@ class DigitsConvNet(nn.Module):
         # fully connected layer
         xb = self.fc(xb)
         xb = F.relu(xb)
-        return xb
+        return xb.view(N, 10)
         pass
 
 def fit_and_evaluate(net, optimizer, loss_func, train, test, n_epochs, batch_size=1):
