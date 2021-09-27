@@ -76,6 +76,20 @@ def svm_predictor(alpha, x_train, y_train, x_test,
     Return:
         A 1d tensor with shape (M,), the outputs of SVM on the test set.
     '''
+    N = alpha.shape[0]
+    d = alpha.shape[1]
+    M = x_test.shape[0]
+
+    w = torch.zeros(d)
+    result = torch.zeros(M)
+    for i in range(M):
+      for j in range(N):
+        w = w + alpha[j]*y_train[j]*x_train[j]
+      if torch.matmul(x_test[i]*w)>=0:
+        result[i] = 1
+      else:
+        result[i] = -1
+    return result
     pass
 
 class DigitsConvNet(nn.Module):
