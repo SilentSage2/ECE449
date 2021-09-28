@@ -165,7 +165,7 @@ def fit_and_evaluate(net, optimizer, loss_func, train, test, n_epochs, batch_siz
     # Train the network for n_epochs, storing the training and validation losses
     # after every epoch. Remember not to store gradient information while calling
     # epoch_loss
-    
+
     with torch.no_grad():
         train_losses.append(epoch_loss(net,loss_func,train))
         test_losses. append(epoch_loss(net,loss_func,test))
@@ -175,24 +175,13 @@ def fit_and_evaluate(net, optimizer, loss_func, train, test, n_epochs, batch_siz
         train_losses.append(loss_batch_train)
 
         loss_batch_test  = batch_loss(net, loss_func, test_dl,  optimizer)
-        train_losses.append(loss_batch_train)
-
-        # for iteration, (X_sample, Y_sample) in enumerate(train_dl):
-        #     # Get the loss
-        #     loss = loss_func(net(X_sample.view(1,8,8)), Y_sample)
-        #     print('Epoch', epoch, 'Iteration', iteration, loss.item())
-        #     loss_epoc_train += loss.item()
-        #     # Gradient step
-        #     optimizer.zero_grad()
-        #     loss.backward()
-        #     optimizer.step()
-        # train_losses.append(loss_epoc_train/iteration)
+        train_losses.append(loss_batch_test)
+        
     return train_losses, test_losses
-    
+
 def batch_loss(net, loss_func, data_loader, optimizer):
     for X, Y in data_loader:
-        loss = loss_func(net(X), Y).item() * len(X)
-        # losses.append() # Compute total loss for batch
+        loss = loss_func(net(X), Y)
         loss.backward()
         optimizer.step()
         optimizer.zero_grad()
