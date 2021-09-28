@@ -121,20 +121,20 @@ class DigitsConvNet(nn.Module):
         Returns:
             An (N, 10) torch tensor
         '''
+        N = xb.shape[0]
         # convolutional layer
-        N = xb.size()[0]
         xb = xb.view(N, 1, 8, 8)
-        xb = self.conv1(xb)
-        xb = F.relu(xb)
+        print(xb)
+        xb = self.relu(self.conv1(xb))
         # maximum pooling layer
-        xb = self.pooling(xb)
-        xb = F.relu(xb)
+        print(xb)
+        xb = self.relu(self.pooling(xb))
         # convolutional layer
-        xb = self.conv2(xb)
-        xb = F.relu(xb)
+        print(xb)
+        xb = self.relu(self.conv2(xb))
         # fully connected layer
-        xb = self.fc(xb)
-        xb = F.relu(xb)
+        print(xb)
+        xb = self.relu(self.fc(torch.squeeze(xb)))
         return xb.view(N, 10)
         pass
 
