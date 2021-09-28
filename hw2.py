@@ -162,8 +162,8 @@ def fit_and_evaluate(net, optimizer, loss_func, train, test, n_epochs, batch_siz
     # epoch_loss
 
     with torch.no_grad():
-        train_losses.append(hw2_utils.epoch_loss(net,loss_func,train))
-        test_losses. append(hw2_utils.epoch_loss(net,loss_func,test))
+        train_losses.append(hw2_utils.epoch_loss(net,loss_func,train_dl))
+        test_losses. append(hw2_utils.epoch_loss(net,loss_func,test_dl))
 
     for epoch in range(n_epochs):
         for X, Y in train_dl:
