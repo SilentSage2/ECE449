@@ -53,7 +53,7 @@ def svm_solver(x_train, y_train, lr, num_iters,
       g.backward()
       with torch.no_grad():
         alp = torch.clamp_(alp - lr * alp.grad, 0, c)
-        print(alp)
+
       alp.requires_grad_()
       
     return alp
