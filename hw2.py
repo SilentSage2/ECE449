@@ -171,11 +171,18 @@ def fit_and_evaluate(net, optimizer, loss_func, train, test, n_epochs, batch_siz
         test_losses. append(hw2_utils.epoch_loss(net,loss_func,test))
 
     for epoch in range(n_epochs):
-        loss_batch_train = batch_loss(net, loss_func, train_dl, optimizer)
+        for X, Y in train_dl:
+            loss = loss_func(net(X), Y)
+            # if optimizer.grad:
+            loss.backward()
+            optimizer.step()
+            optimizer.zero_grad()
+        # obtain loss of train after each epoch
+        loss_batch_train = hw2_utils.epoch_loss(net, loss_func, train_dl)
         train_losses.append(loss_batch_train)
-
+        # obtain loss of test after each epoch
         loss_batch_test  = hw2_utils.epoch_loss(net, loss_func, test_dl)
-        train_losses.append(loss_batch_test)
+        test_losses.append(loss_batch_test)
         
     return train_losses, test_losses
 
