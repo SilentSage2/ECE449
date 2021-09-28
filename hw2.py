@@ -168,12 +168,12 @@ def fit_and_evaluate(net, optimizer, loss_func, train, test, n_epochs, batch_siz
     with torch.no_grad():
         train_loss_initial = 0
         for iteration, (train_x, train_y) in enumerate(train):
-          train_loss_initial += loss_func(net(train_x.view(1,8,8)),train_y)
+          train_loss_initial += loss_func(net(train_x.view(1,8,8)),train_y).item()
         train_losses.append(train_loss_initial/iteration)
     with torch.no_grad():
         test_loss_initial = 0
         for iteration, (test_x, test_y) in enumerate(test):
-          test_loss_initial += loss_func(net(test_x.view(1,8,8)),test_y)
+          test_loss_initial += loss_func(net(test_x.view(1,8,8)),test_y).item()
         test_losses.append(test_loss_initial/iteration)
     for epoch in range(n_epochs):
         # Randomly sample a batch
