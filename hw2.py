@@ -101,7 +101,7 @@ class DigitsConvNet(nn.Module):
         torch.manual_seed(0) # Do not modify the random seed for plotting!
         self.conv1   = nn.Conv2d   (1, 8, kernel_size=3,stride=1, padding=0, dilation=1, groups=1, bias=True)
         self.pooling = nn.MaxPool2d(kernel_size=2)
-        self.conv2   = nn.Conv2d   (8, 4, kernel_size=3,(stride=1, padding=0, dilation=1, groups=1, bias=True)
+        self.conv2   = nn.Conv2d   (8, 4, kernel_size=3,stride=1, padding=0, dilation=1, groups=1, bias=True)
         self.fc      = nn.Linear   (4, 10, bias=True)
         self.relu    = nn.ReLU     ()
         pass
