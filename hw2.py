@@ -76,11 +76,15 @@ def svm_predictor(alpha, x_train, y_train, x_test,
     N = x_train.shape[0]
     d = x_train.shape[1]
     # initialize an empty optimal solution for primal program
-    w = torch.zeros(d)
-    for j in range(N):
-      w = w + alpha[j]*y_train[j]*x_train[j]
-    # get the prediction result y = X.T * W
-    result = torch.matmul(x_test, w)
+    # w = torch.zeros(d)
+    # for j in range(N):
+    #   w = w + alpha[j]*y_train[j]*x_train[j]
+    # # get the prediction result y = X.T * W
+    # result = torch.matmul(x_test, w)
+    result = torch.zeros(M)
+    for i in range(M):
+      for j in range(N):
+        result[i]=result[i]+alpha[j]*y_train[j]*kernel(x_train[j],x_test[i])
     return result
     pass
 
