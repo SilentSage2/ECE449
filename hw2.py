@@ -73,9 +73,8 @@ def svm_predictor(alpha, x_train, y_train, x_test,
     Return:
         A 1d tensor with shape (M,), the outputs of SVM on the test set.
     '''
-    N = alpha.shape[0]
-    d = alpha.shape[1]
-    M = x_test.shape[0]
+    N = x_train.shape[0]
+    d = x_train.shape[1]
     # initialize an empty optimal solution for primal program
     w = torch.zeros(d)
     for j in range(N):
