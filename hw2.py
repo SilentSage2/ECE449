@@ -123,16 +123,12 @@ class DigitsConvNet(nn.Module):
         N = xb.shape[0]
         # convolutional layer
         xb = xb.view(N, 1, 8, 8)
-        print(xb)
         xb = self.relu(self.conv1(xb))
         # maximum pooling layer
-        print(xb)
         xb = self.relu(self.pooling(xb))
         # convolutional layer
-        print(xb)
         xb = self.relu(self.conv2(xb))
         # fully connected layer
-        print(xb)
         xb = self.relu(self.fc(torch.squeeze(xb)))
         return xb.view(N, 10)
         pass
