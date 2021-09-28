@@ -36,26 +36,23 @@ def svm_solver(x_train, y_train, lr, num_iters,
     '''
     N = x_train.shape[0]
     d = x_train.shape[1]
-
+    # assistive matrix A
     A = torch.zeros(N,N)
     for i in range(N):
       for j in range(N):
         A[i,j]=y_train[i]*y_train[j]*kernel(x_train[i],x_train[j])
-
+    # initialize an empty alpha
     alp = torch.zeros(N, requires_grad=True)
-
     for epoc in range(num_iters):
+      # dual function g(alpha)
       g = -torch.matmul(torch.ones(1,N),alp)+0.5*torch.matmul(torch.matmul(alp.T,A),alp)
-
+      # clear gradiant info before back-propagation
       if alp.grad:
         alp.grad.zero_()
-
       g.backward()
       with torch.no_grad():
         alp = torch.clamp_(alp - lr * alp.grad, 0, c)
-
       alp.requires_grad_()
-      
     return alp
     pass
 
@@ -79,19 +76,12 @@ def svm_predictor(alpha, x_train, y_train, x_test,
     N = alpha.shape[0]
     d = alpha.shape[1]
     M = x_test.shape[0]
-
+    # initialize an empty optimal solution for primal program
     w = torch.zeros(d)
     for j in range(N):
       w = w + alpha[j]*y_train[j]*x_train[j]
-
+    # get the prediction result y = X.T * W
     result = torch.matmul(x_test, w)
-    # result = torch.zeros(M)
-    # for i in range(M):
-    #   if torch.matmul(x_test[i]*w)>=0:
-    #     result[i] = 1
-    #   else:
-    #     result[i] = -1
-    print(result.shape)
     return result
     pass
 
