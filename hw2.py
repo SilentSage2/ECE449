@@ -79,7 +79,6 @@ def svm_predictor(alpha, x_train, y_train, x_test,
         A 1d tensor with shape (M,), the outputs of SVM on the test set.
     '''
     N = alpha.shape[0]
-    N = alpha.shape[0]
     d = alpha.shape[1]
     M = x_test.shape[0]
 
@@ -87,12 +86,14 @@ def svm_predictor(alpha, x_train, y_train, x_test,
     for j in range(N):
       w = w + alpha[j]*y_train[j]*x_train[j]
 
-    result = torch.zeros(M)
-    for i in range(M):
-      if torch.matmul(x_test[i]*w)>=0:
-        result[i] = 1
-      else:
-        result[i] = -1
+    result = torch.matmul(x_test, w)
+    # result = torch.zeros(M)
+    # for i in range(M):
+    #   if torch.matmul(x_test[i]*w)>=0:
+    #     result[i] = 1
+    #   else:
+    #     result[i] = -1
+    print(result.shape)
     return result
     pass
 
