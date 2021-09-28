@@ -167,14 +167,14 @@ def fit_and_evaluate(net, optimizer, loss_func, train, test, n_epochs, batch_siz
     # epoch_loss
 
     with torch.no_grad():
-        train_losses.append(epoch_loss(net,loss_func,train))
-        test_losses. append(epoch_loss(net,loss_func,test))
+        train_losses.append(hw2_utils.epoch_loss(net,loss_func,train))
+        test_losses. append(hw2_utils.epoch_loss(net,loss_func,test))
 
     for epoch in range(n_epochs):
         loss_batch_train = batch_loss(net, loss_func, train_dl, optimizer)
         train_losses.append(loss_batch_train)
 
-        loss_batch_test  = batch_loss(net, loss_func, test_dl,  optimizer)
+        loss_batch_test  = hw2_utils.epoch_loss(net, loss_func, test_dl)
         train_losses.append(loss_batch_test)
         
     return train_losses, test_losses
@@ -185,4 +185,4 @@ def batch_loss(net, loss_func, data_loader, optimizer):
         loss.backward()
         optimizer.step()
         optimizer.zero_grad()
-    return epoch_loss(net, loss_func, data_loader)
+    return hw2_utils.epoch_loss(net, loss_func, data_loader)
