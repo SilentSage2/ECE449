@@ -1,4 +1,4 @@
-import numpy as np
+ import numpy as np
 import matplotlib.pyplot as plt
 
 from hw3_utils import visualization, get_dataset_fixed
