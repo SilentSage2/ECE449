@@ -138,7 +138,26 @@ def adaboost(data, labels, n_classifiers):
     data_weights = np.ones(n) / n
 
     for i in range(n_classifiers):
-        pass
+
+        # My code begins here
+        d = data.shape[1]
+        classifier = Stump(data, labels, data_weights)
+        classifiers.append(classifier)
+        # get the weight of each classifier -- alpha
+        error = 0 
+        for j in range(n):
+            error += data_weights[j]*(classifier.predict(data[j].reshape(-1,d))!=labels[j])
+        # weight of each classifier
+        alpha = 0.5*np.log((1-error)/error) 
+        weights.append(alpha)
+        # get the normalization sum -- z_t
+        z_t = 0
+        for j in range(n):
+            z_t += data_weights[j]*np.exp(-alpha*labels[j]*classifier.predict(data[j].reshape(-1,d)))
+        # update data_weight
+        for j in range(n):
+            data_weights[j] = data_weights[j]*np.exp(-alpha*labels[j]*classifier.predict(data[j].reshape(-1,d)))/z_t
+        # pass
 
     return classifiers, weights
 
