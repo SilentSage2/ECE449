@@ -39,7 +39,8 @@ class Stump():
         # Either +1 or -1
         self.sign = 1
 
-        t = np.linspace(-1,1,100001)
+        t = np.linspace(-1,1,1001) #initialize threshold candidates
+        self.weights = weights
         loss = np.inf
         for k in range(np.shape(data)[1]):
             for j in range(len(t)):
