@@ -40,24 +40,26 @@ class Stump():
         self.sign = 1
 
         # My code begins here
-        t = np.linspace(-1,1,1001)
+        t = np.linspace(-1,1,11)
         loss = np.inf
         for k in range(np.shape(data)[1]):
             for j in range(len(t)):
-                if  loss > self.GetLoss(data[:,k], labels, t[j], weights):
-                    loss = self.GetLoss(data[:,k], labels, t[j], weights)
-                    self.threshold = t[j]
-                    self.dimension = k
+                for s in [-1,1]:
+                    if  loss > self.GetLoss(data[:,k], labels, t[j], s, weights):
+                        loss = self.GetLoss(data[:,k], labels, t[j], s, weights)
+                        self.threshold = t[j]
+                        self.dimension = k
+                        self.sign      = s
 
         pass
 
     # define a help function
-    def GetLoss(self, x_k, y, t, weights):
+    def GetLoss(self, x_k, y, t, s, weights):
         loss = 0
         for i in range(len(x_k)):
-            y_hat = self.sign
+            y_hat = s
             if x_k[i] < t:
-                y_hat = -self.sign
+                y_hat = -s
             loss += weights[i]*(y_hat != y[i])
         return loss
 
