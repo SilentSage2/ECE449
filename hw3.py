@@ -107,7 +107,14 @@ def bagging(data, labels, n_classifiers, n_samples, seed=0):
     for i in range(n_classifiers):
         np.random.seed(seed + i)
         sample_indices = np.random.choice(n, size=n_samples, replace=False)
-        pass
+
+        # My code begins here
+        data_train  = data  [sample_indices]
+        label_train = labels[sample_indices]
+        weight = [1.0] * label_train.size
+        classifier = Stump(data_train, label_train, weight)
+        classifiers.append(classifier)
+        # pass
 
     return classifiers
 
