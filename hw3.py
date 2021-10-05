@@ -39,7 +39,25 @@ class Stump():
         # Either +1 or -1
         self.sign = 1
 
+        t = np.linspace(-1,1,100001)
+        loss = np.inf
+        for k in range(np.shape(data)[1]):
+            for j in range(len(t)):
+                if  loss > self.GetLoss(data[:,k], labels, t[j]):
+                    loss = self.GetLoss(data[:,k], labels, t[j])
+                    self.threshold = t[j]
+                    self.dimension = k
+
         pass
+
+    def GetLoss(self, x_k, y, t):
+        loss = 0
+        for i in range(len(x_k)):
+            y_hat = self.sign
+            if x_k[i] < t:
+                y_hat = -self.sign
+            loss += weights[i]*(y_hat != y[i])
+        return loss
 
     def predict(self, data):
         '''
@@ -51,6 +69,16 @@ class Stump():
         Returns:
             prediction: An ndarray with shape (n, ). Values are +1 or -1.
         '''
+
+        n = np.shape(data)[0]
+        prediction = np.zeros(n)
+        x_k = data[:,self.dimension]
+        for i in range(n):
+            prediction[i] = self.sign
+            if x_k[i] < self.threshold:
+                prediction[i] = -self.sign
+        return prediction
+
         pass
 
 
