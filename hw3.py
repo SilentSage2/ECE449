@@ -40,7 +40,7 @@ class Stump():
         self.sign = 1
 
         # My code begins here
-        t = np.linspace(-1,1,11)
+        t = np.linspace(-1,1,101)
         loss = np.inf
         for k in range(np.shape(data)[1]):
             for j in range(len(t)):
