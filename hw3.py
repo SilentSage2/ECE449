@@ -40,14 +40,14 @@ class Stump():
         self.sign = 1
 
         # My code begins here
-        t = np.linspace(-1,1,101)
         loss = np.inf
         for k in range(np.shape(data)[1]):
-            for j in range(len(t)):
+            threshold_list = self.get_threshold(data[:,k])
+            for j in range(len(threshold_list)):
                 for s in [-1,1]:
-                    if  loss > self.GetLoss(data[:,k], labels, t[j], s, weights):
-                        loss = self.GetLoss(data[:,k], labels, t[j], s, weights)
-                        self.threshold = t[j]
+                    if  loss > self.GetLoss(data[:,k], labels, threshold_list[j], s, weights):
+                        loss = self.GetLoss(data[:,k], labels, threshold_list[j], s, weights)
+                        self.threshold = threshold_list[j]
                         self.dimension = k
                         self.sign      = s
 
@@ -62,6 +62,17 @@ class Stump():
                 y_hat = -s
             loss += weights[i]*(y_hat != y[i])
         return loss
+    def get_threshold(self, data_k):
+        list_sorted = data_k.copy()
+        list_sorted.sort()
+        result_list = []
+        for i in range(len(list_sorted)-1):
+            result_list.append((list_sorted[i]+list_sorted[i+1])/2)
+        result_list = np.unique(result_list).tolist()
+        result_list.append(1)
+        result_list.append(-1)
+        result_list = np.unique(np.array(result_list)).tolist()
+        return result_list
 
     def predict(self, data):
         '''
