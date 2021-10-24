@@ -44,15 +44,9 @@ def k_means(X=None, init_c=None, n_iters=3):
         c[1,1] = torch.mean(X[1,[i for i in range(len(labels)) if labels[i]==1]])
     
     return c
-
-
+    
+# help function
 def classifier(c,point):
-    label = 0
-    dis = dist(c[:,0],point)
-    for i in range(c.size()[1]):
-        if dis > dist(c[:,i],point):
-            label = i
-    return label
+    return dist(c[:,0],point) < dist(c[:,1],point)
 def dist(a, b):
-    distance = torch.sqrt((a[0]-b[0])**2+(a[1]-b[1])**2)
-    return distance
+    return torch.sqrt((a[0]-b[0])**2+(a[1]-b[1])**2)
