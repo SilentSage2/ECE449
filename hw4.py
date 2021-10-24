@@ -15,10 +15,11 @@ def k_means(X=None, init_c=None, n_iters=3):
     # loading data and intiailzation of the cluster centers
     if X is None:
         X, c = hw4_utils.load_data()
+    else:
+        c = init_c
 
     # your code below
-    if X is not None:
-        c = init_c
+
     for k in range(n_iters):
         # first solve the assignment problem given the centers c
         
