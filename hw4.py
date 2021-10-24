@@ -31,8 +31,8 @@ def k_means(X=None, init_c=None, n_iters=3):
             label = classifier(c,X[:,i])
             labels.append(label)
         plt.figure()
-        c1 = c[:,0] 
-        c2 = c[:,1]
+        c1 = c[:,0].reshape(2,1) 
+        c2 = c[:,1].reshape(2,1) 
         x1 = X[:,[i for i in range(len(labels)) if labels[i]==0]]
         x2 = X[:,[i for i in range(len(labels)) if labels[i]==1]]
         vis_cluster(c1, x1, c2, x2)
