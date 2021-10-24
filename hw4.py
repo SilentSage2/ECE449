@@ -17,7 +17,7 @@ def k_means(X=None, init_c=None, n_iters=3):
         X, c = hw4_utils.load_data()
 
     # your code below
-
+    c  = init_c
     for k in range(n_iters):
         # first solve the assignment problem given the centers c
         
