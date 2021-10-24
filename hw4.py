@@ -17,7 +17,8 @@ def k_means(X=None, init_c=None, n_iters=3):
         X, c = hw4_utils.load_data()
 
     # your code below
-    c  = init_c
+    if X is not None:
+        c = init_c
     for k in range(n_iters):
         # first solve the assignment problem given the centers c
         
@@ -34,7 +35,7 @@ def k_means(X=None, init_c=None, n_iters=3):
         c2 = c[:,1].reshape(2,1) 
         x1 = X[:,[i for i in range(len(labels)) if labels[i]==0]]
         x2 = X[:,[i for i in range(len(labels)) if labels[i]==1]]
-        vis_cluster(c1, x1, c2, x2)
+        hw4_utils.vis_cluster(c1, x1, c2, x2)
         # plt.plot(c[0,0],c[1,0],'r*')
         # plt.plot(c[0,1],c[1,1],'b*')
         # plt.plot(X[0, [i for i in range(len(labels)) if labels[i]==0]], X[1, [i for i in range(len(labels)) if labels[i]==0]], 'rx')
