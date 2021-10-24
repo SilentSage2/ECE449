@@ -30,7 +30,6 @@ def k_means(X=None, init_c=None, n_iters=3):
         for i in range(N):
             label = classifier(c,X[:,i])
             labels.append(label)
-        plt.figure()
         c1 = c[:,0].reshape(2,1) 
         c2 = c[:,1].reshape(2,1) 
         x1 = X[:,[i for i in range(len(labels)) if labels[i]==0]]
