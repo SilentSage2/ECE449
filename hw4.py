@@ -37,10 +37,6 @@ def k_means(X=None, init_c=None, n_iters=3):
         x1 = X[:,[i for i in range(len(labels)) if labels[i]==0]]
         x2 = X[:,[i for i in range(len(labels)) if labels[i]==1]]
         hw4_utils.vis_cluster(c1, x1, c2, x2)
-        # plt.plot(c[0,0],c[1,0],'r*')
-        # plt.plot(c[0,1],c[1,1],'b*')
-        # plt.plot(X[0, [i for i in range(len(labels)) if labels[i]==0]], X[1, [i for i in range(len(labels)) if labels[i]==0]], 'rx')
-        # plt.plot(X[0, [i for i in range(len(labels)) if labels[i]==1]], X[1, [i for i in range(len(labels)) if labels[i]==1]], 'bo')
         # pass
         c[0,0] = torch.mean(X[0,[i for i in range(len(labels)) if labels[i]==0]])
         c[1,0] = torch.mean(X[1,[i for i in range(len(labels)) if labels[i]==0]])
