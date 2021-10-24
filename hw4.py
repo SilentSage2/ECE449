@@ -25,6 +25,32 @@ def k_means(X=None, init_c=None, n_iters=3):
         
         # visulize the current clustering using hw4_utils.vis_cluster. 
         # with n_iters=3, there will be 3 figures. Put those figures in your written report. 
-        pass
+        N = X.size()[1]
+        labels = []
+        for i in range(N):
+            label = classifier(c,X[:,i])
+            labels.append(label)
+        plt.figure()
+        plt.plot(c[0,0],c[1,0],'r*')
+        plt.plot(c[0,1],c[1,1],'b*')
+        plt.plot(X[0, [i for i in range(len(labels)) if labels[i]==0]], X[1, [i for i in range(len(labels)) if labels[i]==0]], 'rx')
+        plt.plot(X[0, [i for i in range(len(labels)) if labels[i]==1]], X[1, [i for i in range(len(labels)) if labels[i]==1]], 'bo')
+        # pass
+        c[0,0] = torch.mean(X[0,[i for i in range(len(labels)) if labels[i]==0]])
+        c[1,0] = torch.mean(X[1,[i for i in range(len(labels)) if labels[i]==0]])
+        c[0,1] = torch.mean(X[0,[i for i in range(len(labels)) if labels[i]==1]])
+        c[1,1] = torch.mean(X[1,[i for i in range(len(labels)) if labels[i]==1]])
     
     return c
+
+
+def classifier(c,point):
+    label = 0
+    dis = dist(c[:,0],point)
+    for i in range(c.size()[1]):
+        if dis > dist(c[:,i],point):
+            label = i
+    return label
+def dist(a, b):
+    distance = torch.sqrt((a[0]-b[0])**2+(a[1]-b[1])**2)
+    return distance
