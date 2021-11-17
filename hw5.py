@@ -33,31 +33,6 @@ class Discriminator(nn.Module):
         Define the layers in the discriminator network.
         """
         super().__init__()
-        # Your code here
-
-    def forward(self, x):
-        """
-        Define forward pass in the discriminator network.
-
-        Arguments:
-            x: A tensor with shape (batch_size, 1, 32, 32).
-
-        Returns:
-            A tensor with shape (batch_size), predicting the probability of
-            each example being a *real* image. Values in range (0, 1).
-        """
-        # Your code here
-
-
-class Generator(nn.Module):
-    """Generator network."""
-
-    def __init__(self,):
-        """
-        Define the layers in the generator network.
-        """
-        super().__init__()
-        # Your code here
         torch.manual_seed(0)
         self.conv1 = nn.Conv2d   (1, 16, kernel_size=3,stride=1, padding=1)
         self.pool1 = nn.MaxPool2d(kernel_size=2,stride=2,padding=0)
@@ -81,7 +56,6 @@ class Generator(nn.Module):
             each example being a *real* image. Values in range (0, 1).
         """
         # Your code here
-
         N = x.shape[0]
         # first layer
         x = x.view(N, 1, 32, 32)
@@ -95,7 +69,50 @@ class Generator(nn.Module):
         # fully connected layer
         x = self.fc(torch.squeeze(x))
         x = self.sig(x)
-        return x
+        return x.view(N,128)
+
+
+class Generator(nn.Module):
+    """Generator network."""
+
+    def __init__(self,):
+        """
+        Define the layers in the generator network.
+        """
+        super().__init__()
+        # Your code here
+        torch.manual_seed(0)
+        self.convt1 = nn.ConvTranspose2d   (128, 64, kernel_size=4,stride=1, padding=0)
+        self.convt2 = nn.ConvTranspose2d   (64 , 32, kernel_size=4,stride=2, padding=1)
+        self.convt3 = nn.ConvTranspose2d   (32 , 16, kernel_size=4,stride=2, padding=1)
+        self.convt4 = nn.ConvTranspose2d   (16 , 1 , kernel_size=4,stride=2, padding=1)
+        self.relu   = nn.LeakyReLU(negative_slope=0.2)
+        self.tanh   = nn.Tanh     ()
+
+    def forward(self, z):
+        """
+        Define forward pass in the generator network.
+
+        Arguments:
+            z: A tensor with shape (batch_size, 128).
+
+        Returns:
+            A tensor with shape (batch_size, 1, 32, 32). Values in range (-1, 1).
+        """
+        # Your code here
+        N = z.shape[0]
+        # first layer
+        x = x.view(N, 128, 1, 1)
+        x = self.relu(self.convt1(x))
+        # second layer
+        x = self.relu(self.convt2(x))
+        # third layer
+        x = self.relu(self.convt3(x))
+        # fourth layer
+        x = self.relu(self.convt4(x))
+        # fully connected layer
+        x = self.tanh(x)
+        return x.view(N,1,32,32)
 
 
 class GAN(object):
