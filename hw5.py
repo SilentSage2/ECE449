@@ -102,17 +102,17 @@ class Generator(nn.Module):
         # Your code here
         N = z.shape[0]
         # first layer
-        x = x.view(N, 128, 1, 1)
-        x = self.relu(self.convt1(x))
+        z = z.view(N, 128, 1, 1)
+        z = self.relu(self.convt1(z))
         # second layer
-        x = self.relu(self.convt2(x))
+        z = self.relu(self.convt2(z))
         # third layer
-        x = self.relu(self.convt3(x))
+        z = self.relu(self.convt3(z))
         # fourth layer
-        x = self.relu(self.convt4(x))
+        z = self.relu(self.convt4(z))
         # fully connected layer
-        x = self.tanh(x)
-        return x.view(N,1,32,32)
+        z = self.tanh(z)
+        return z.view(N,1,32,32)
 
 
 class GAN(object):
