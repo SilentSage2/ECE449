@@ -58,18 +58,44 @@ class Generator(nn.Module):
         """
         super().__init__()
         # Your code here
+        torch.manual_seed(0)
+        self.conv1 = nn.Conv2d   (1, 16, kernel_size=3,stride=1, padding=1)
+        self.pool1 = nn.MaxPool2d(kernel_size=2,stride=2,padding=0)
+        self.conv2 = nn.Conv2d   (16, 32, kernel_size=3,stride=1, padding=1)
+        self.conv3 = nn.Conv2d   (32, 64, kernel_size=3,stride=1, padding=1)
+        self.conv4 = nn.Conv2d   (64, 128,kernel_size=3,stride=1, padding=1)
+        self.pool2 = nn.MaxPool2d(kernel_size=4,stride=4,padding=0)
+        self.fc    = nn.Linear   (128, 1)
+        self.relu  = nn.LeakyReLU(negative_slope=0.2)
+        self.sig   = nn.Sigmoid  ()
 
-    def forward(self, z):
+    def forward(self, x):
         """
-        Define forward pass in the generator network.
+        Define forward pass in the discriminator network.
 
         Arguments:
-            z: A tensor with shape (batch_size, 128).
+            x: A tensor with shape (batch_size, 1, 32, 32).
 
         Returns:
-            A tensor with shape (batch_size, 1, 32, 32). Values in range (-1, 1).
+            A tensor with shape (batch_size), predicting the probability of
+            each example being a *real* image. Values in range (0, 1).
         """
         # Your code here
+
+        N = x.shape[0]
+        # first layer
+        x = x.view(N, 1, 32, 32)
+        x = self.pool1(self.relu(self.conv1(x)))
+        # second layer
+        x = self.pool1(self.relu(self.conv2(x)))
+        # third layer
+        x = self.pool1(self.relu(self.conv3(x)))
+        # fourth layer
+        x = self.pool2(self.relu(self.conv4(x)))
+        # fully connected layer
+        x = self.fc(torch.squeeze(x))
+        x = self.sig(x)
+        return x
 
 
 class GAN(object):
