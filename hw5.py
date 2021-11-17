@@ -69,7 +69,7 @@ class Discriminator(nn.Module):
         # fully connected layer
         x = self.fc(torch.squeeze(x))
         x = self.sig(x)
-        return x.view(N,128)
+        return x.view(N)
 
 
 class Generator(nn.Module):
@@ -142,6 +142,11 @@ class GAN(object):
             A tensor with only one element, representing the objective V.
         """
         # Your code here
+        N = x.shape[0]
+        D_x = self.D.forward(x)
+        D_G_z = self.D.forward(self.G.forward(z))
+        V = (torch.sum(torch.log(D_x))+torch.sum(torch.log(1-D_G_z)))/N
+        return N
 
     def train(self, epochs):
         for epoch in range(epochs):
