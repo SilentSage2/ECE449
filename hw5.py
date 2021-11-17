@@ -146,7 +146,7 @@ class GAN(object):
         D_x = self.D.forward(x)
         D_G_z = self.D.forward(self.G.forward(z))
         V = (torch.sum(torch.log(D_x))+torch.sum(torch.log(1-D_G_z)))/N
-        return N
+        return V
 
     def train(self, epochs):
         for epoch in range(epochs):
