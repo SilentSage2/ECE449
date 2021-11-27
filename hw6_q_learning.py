@@ -34,6 +34,13 @@ class Agent:
         :param state: the index of a state in the q_table
         :return: the index of an action in the q_table
         """
+        index = 0
+        current_q_value = self.q_table[state, 0]
+        for i in range(1,self.num_actions):
+            if self.q_table[state, i] > current_q_value:
+                current_q_value = self.q_table[state, i]
+                index = i
+        return index
         pass
 
     def _act_train(self, state, epsilon):
@@ -44,6 +51,11 @@ class Agent:
         :param epsilon: a float number
         :return: the index of an action in the q_table
         """
+        a_1 = self._act_eval(state)
+        a_2 = random.randint(0,2)
+        if random.random() < epsilon:
+            return a_2
+        return a_1
         pass
 
     def update(self, state, action, reward, next_state, alpha, gamma):
@@ -57,6 +69,8 @@ class Agent:
         :param alpha: a float number
         :param gamma: a float number
         """
+        new_q_value = (1-alpha)*self.q_table[state,action]+alpha*(reward+gamma*np.max(self.q_table[next_state,:]))
+        self.q_table[state,action] = new_q_value
         pass
 
 
