@@ -111,7 +111,20 @@ def train_agent(env, agents, random_agent, epochs=1000, alpha=0.1, gamma=0.9, ep
         Part (d) Your Code Here. Complete the RL training.
         Use the state_list, action_list and reward_list and the update() function of the agents. 
         """
-
+        i = len(action_list)-1
+        while i >= 0:
+            # we update q_table for each agent with 2-step jump
+            next_index = i+2
+            if next_index > len(state_list)-1: 
+                next_index = i+1
+            if player == 0:
+                agents[1].update(state_list[i],action_list[i],reward_list[i],state_list[next_index],alpha,gamma)
+                player = (player + 1) % 2
+                i -= 1
+            else:
+                agents[0].update(state_list[i],action_list[i],reward_list[i],state_list[next_index],alpha,gamma)
+                player = (player + 1) % 2
+                i -= 1
         pass
 
         """
